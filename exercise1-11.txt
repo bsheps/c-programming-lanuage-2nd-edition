@@ -1,0 +1,2 @@
+How to test word count program? What kinds of input are most likely to uncover bugs if there are any?
+single line program with 0 new lines, multiple blank new lines, one very long word with no spaces, all whitespace with no new lines
