@@ -15,6 +15,7 @@ double pop(void);
 void peek(void);
 void dup(void);
 void swap(void);
+void clear(void);
 void showInternals(int);
 
 //reverse polish calculator
@@ -52,6 +53,18 @@ int main(){
 				push(remainder(pop(), op2));
 			else
 				printf("error: zero modulus\n");
+			break;
+		case '?':
+			peek();
+			break;
+		case '~':
+			swap();
+			break;
+		case '@':
+			dup();
+			break;
+		case '!':
+			clear();
 			break;
 		case '\n':
 			printf("\tResult: %.8g\n", pop());
@@ -106,9 +119,9 @@ void dup(void){
 // swap top 2 elements of stack
 void swap(void){
 	if(sp > 1){
-		double hold = val[s-1];
-		val[s-1] = val[s-2];
-		val[s-2] = hold;
+		double hold = val[sp-1];
+		val[sp-1] = val[sp-2];
+		val[sp-2] = hold;
 	}else
 		printf("swap error: stack has less than 2 entries.\n");
 }
