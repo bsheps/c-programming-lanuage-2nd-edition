@@ -42,7 +42,7 @@ int main(){
 		variables[i] = 0.0;
 	}
 	while((type = getop(s)) != EOF) {
-		showInternals(type);
+	//	showInternals(type); // for debugging
 		switch(type){
 		case NUMBER:
 			push(atof(s));
@@ -193,8 +193,7 @@ int getop(char s[]){
 			iter = 0;
 		}
 	}
-	
-	printf("getline: %s,iter %d\n", userInput, iter);
+//	printf("getline: %s,iter %d\n", userInput, iter);  // for debugging
 	while((s[0] = c = userInput[iter++]) == ' ' || c == '\t')
 		;	// ignore 
 	s[1] = '\0';
