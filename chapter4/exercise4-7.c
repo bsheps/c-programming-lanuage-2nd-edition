@@ -20,6 +20,7 @@ void dup(void);
 void swap(void);
 void clear(void);
 void showInternals(int);
+void ungets(char []);
 
 /* reverse polish calculator
  4-6 had some help looking at solution manual; 
@@ -27,6 +28,8 @@ void showInternals(int);
 'A 4 *' takes the value of A, pushes to stack making 5 4 * which equals 20
 20 is stored in v where it can be used in the future aka:
 v A / which pushes the value of v and A to make '20 5 /' and results in 4
+
+4-7 We don't need to know about buf or bufp, only ungetch is needed.
 */
 int main(){
 	int i, type, prevType;
@@ -206,6 +209,12 @@ int getop(char s[]){
 	if( c != EOF)
 		ungetch(c);
 	return NUMBER;
+}
+
+void ungets(char s[]){
+	int len = strlen(s);
+	while(len > 0)
+		ungetch(s[--len]);
 }
 
 #define BUFSIZE	100
