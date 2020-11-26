@@ -122,3 +122,66 @@
 1. *In a two's complement number representation, our version of itoa does not handle the largest negative number, that is, the value of n equal to -(2 to the power (wordsize - 1)) . Explain why not. Modify it to print that value correctly regardless of the machine on which it runs.* [possible solution](chapter3/exercise1-4.c)
 1. *Write the function itob(n,s,b) that converts the integer n into a base b character representation in the string s . In particular, itob(n,s,16) formats n as a hexadecimal integer in s .* [possible solution](chapter3/exercise1-5.c)
 1. *Write a version of itoa that accepts three arguments instead of two. The third argument is a minimum field width; the converted number must be padded with blanks on the left if necessary to make it wide enough.* [possible solution](chapter3/exercise1-6.c)
+
+## Chapter 4 - Functions and Program Structure
+
+* Function structure:
+
+```none
+return-type function-name(argument declarations)
+{
+    declarations and statements
+}
+```
+
+* Reverse polish notation (RPN) - operator follows the operands
+    * `(1-2) * (4+5)` becomes `1 2 - 4 5 + *`
+    * utilizes a stack
+    * [base RPN calculator](chapter4/reversePolishCalculator.c) that exercises build on
+* Functions cannot be defined inside other functions
+* Header files can be used to modularize and organize the program
+* `static` variables are for private use of functions in the respective source file(s)
+    * `static` can be applied to variables **and** functions
+* [Quicksort algorithm](chapter4/qsort.c)
+* C preprocessor handles the `#include...` and `#define...` tags
+* Macro substitution
+    * simplest form is direct replacement `#define name replacement text`
+    * can take arguments and create replacement text 
+    ```c
+    #define dprint(expr) printf(#expr " = %g\n", expr)
+
+    dprint(x/y); //becomes:
+
+    printf("x/y = %g\n", x/y);
+    ```
+    * `#` operator takes `expr` as a string
+    * `##` operator catenates arguments and trims whitespace
+    * `\` allows for multiline macros (aka to-be-continued)
+    * conditional macros are possible too
+    ```
+    #if SYSTEM == SYSV
+        #define HDR "sysv.h"
+    #elif SYSTEM === BSD
+        #define HDR "bsd.h"
+    ...
+    #else
+        #define HDR "default.h"
+    #endif
+    #include HDR
+    ```
+
+### Chapter 4 exercises:
+1. Write the function strrindex(s,t), which returns the position of the rightmost occurrence of t in s, or -1 if there is none. [possible solution](chapter4/exercise4-1.c)
+1. Extend atof to handle scientific notation of the form 123.45e-6 where a floating-point number may be followed by e or E and an optionally signed exponent. [possible solution](chapter4/exercise4-2.c)
+1. Given the basic framework, it's straightforward to extend the calculator. Add the modulus ( % ) operator and provisions for negative numbers. [possible solution](chapter4/exercise4-3.c)
+1. Add commands to print the top element of the stack without popping, to duplicate it, and to swap the top two elements. Add a command to clear the stack. [possible solution](chapter4/exercise4-4.c)
+1. Add access to library functions like sin, exp, and pow . See <math.h> in Appendix B, Section 4. [possible solution](chapter4/exercise4-5.c)
+1. Add commands for handling variables. (It's easy to provide twenty-six variables with single-letter names.) Add a variable for the most recently printed value. [possible solution](chapter4/exercise4-6.c)
+1. Write a routine ungets(s) that will push back an entire string onto the input. Should ungets know about buf and bufp , or should it just use ungetch? [possible solution](chapter4/exercise4-7.c)
+1. Suppose there will never be more than one character of pushback. Modify getch and ungetch accordingly. [possible solution](chapter4/exercise4-8.c)
+1. Our getch and ungetch do not handle a pushed-back EOF correctly. Decide what their properties ought to be if an EOF is pushed back, then implement your design. [possible solution](chapter4/exercise4-9.c)
+1. An alternate organization uses getline to read an entire input line; this makes getch and ungetch unnecessary. Revise the calculator to use this approach. [possible solution](chapter4/exercise4-10.c)
+1. Modify getop so that it doesn't need to use ungetch. Hint: use an internal static variable. [possible solution](chapter4/exercise4-11.c)
+1. Adapt the ideas of printd to write a recursive version of itoa ; that is, convert an integer into a string by calling a recursive routine. [possible solution](chapter4/exercise4-12.c)
+1. Write a recursive version of the function reverse(s) , which reverses the string s in place. [possible solution](chapter4/exercise4-13.c)
+1. Define a macro swap(t,x,y) that interchanges two arguments of type t . (Block structure will help.) [possible solution](chapter4/exercise4-14.c)
