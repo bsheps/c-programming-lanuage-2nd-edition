@@ -158,10 +158,10 @@ return-type function-name(argument declarations)
     * `##` operator catenates arguments and trims whitespace
     * `\` allows for multiline macros (aka to-be-continued)
     * conditional macros are possible too
-    ```
+    ```c
     #if SYSTEM == SYSV
         #define HDR "sysv.h"
-    #elif SYSTEM === BSD
+    #elif SYSTEM == BSD
         #define HDR "bsd.h"
     ...
     #else
