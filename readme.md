@@ -185,3 +185,11 @@ return-type function-name(argument declarations)
 1. Adapt the ideas of printd to write a recursive version of itoa ; that is, convert an integer into a string by calling a recursive routine. [possible solution](chapter4/exercise4-12.c)
 1. Write a recursive version of the function reverse(s) , which reverses the string s in place. [possible solution](chapter4/exercise4-13.c)
 1. Define a macro swap(t,x,y) that interchanges two arguments of type t . (Block structure will help.) [possible solution](chapter4/exercise4-14.c)
+
+## Chapter 5 - Pointers and Arrays
+
+* Pointers point to a specific memory address
+    * `&` gives address of an object
+    * `*` dereferences/indirection of pointer (aka gives the value of whatever the pointer is pointing at)
+    * pointers have a type, but generic is possible with `void *`
+  
