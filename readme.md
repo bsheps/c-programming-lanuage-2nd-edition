@@ -192,7 +192,20 @@ return-type function-name(argument declarations)
     * `&` gives address of an object
     * `*` dereferences/indirection of pointer (aka gives the value of whatever the pointer is pointing at)
     * pointers have a type, but generic is possible with `void *`
+* pointers and arrays
+    * anything that can be done via array subscripting, can be done with a pointer
+```c
+int a[10];
+int *pa;
+pa = &a[0];
+*(pa+1); // aka a[1]
+*(pa+2); // aka a[2]
+++pa; // aka a[1]; this is valid! (pa is a variable, but array a is not ~~++a~~)
+++pa; // aka a[2]
+*(pa-2) // aka a[0]
+```
 
+ 
 ### Chapter 5 exercises:
 1. As written, getint treats a + or - not followed by a digit as a valid representation of zero. Fix it to push such a character back on the input. [possible solution](chapter5/exercise5-1.c)
 1. Write getfloat , the floating-point analog of getint . What type does getfloat return as its function value? [possible solution](chapter5/exercise5-2.c)
