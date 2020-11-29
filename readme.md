@@ -192,4 +192,7 @@ return-type function-name(argument declarations)
     * `&` gives address of an object
     * `*` dereferences/indirection of pointer (aka gives the value of whatever the pointer is pointing at)
     * pointers have a type, but generic is possible with `void *`
-  
+
+### Chapter 5 exercises:
+1. As written, getint treats a + or - not followed by a digit as a valid representation of zero. Fix it to push such a character back on the input. [possible solution](chapter5/exercise5-1.c)
+1. Write getfloat , the floating-point analog of getint . What type does getfloat return as its function value? [possible solution](chapter5/exercise5-2.c)
