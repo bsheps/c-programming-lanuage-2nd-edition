@@ -30,7 +30,10 @@ int main(){
 	stringncat(s3,t,7);
 	strncat(s4,t,7);
 	printf("strncat test3: %s, expected: %s\n", s3, s4);
-	
+	char a1[20] = "To be ";
+	char a2[20] = "or not to be";
+	stringncat(a1,a2,6);
+	printf("stringncat: %s\n", a1);	
 	char s5[20] = "helloWorld";
 	char t1[20] = "hellofriend";
 	printf("\nstrncmp test2: %d, expected: %d\n", stringncmp(s5,t1,5), strncmp(s5,t1,5));
