@@ -204,8 +204,36 @@ pa = &a[0];
 ++pa; // aka a[2]
 *(pa-2) // aka a[0]
 ```
+	* gotchas with pointers and right to left associativity
+```c
+#include <stdio.h>
 
- 
+int main(){
+    char c[20] = "Help";
+    char *s;
+    s = c; 
+    printf("init: %s\n",s); // Help
+    ++*s;
+    printf("++*s: %s\n",s); // "Ielp" ascii increment of first element
+    ++(*s);
+    printf("++(*s): %s\n",s); // "Jelp" ascii increment of first element
+    *s++;
+    printf("*s++: %s\n",s); // "elp" moves to next element in array
+    (*s)++;
+    printf("(*s)++: %s\n",s); // "flp" ascii increment of current element
+    *(++s);
+    printf("*(++s)\n: %s\n",s); // "lp" moves to next element
+    *++s;
+    printf("*++s\n: %s\n",s); // "p" moves to next element
+    return 0;
+}
+```
+	* initializing a char array
+```c
+char *s = "hello"; // read-only, modification behavior undefined
+char s[] = "hello"; // ok to modify
+char s[25] = "hi"; // 25 char slots available only 3 used: 'h', 'i', '\0'
+char s[] = { 'h', 'e', 'l', 'l', 'o', '\0' }; // okay too 
 ### Chapter 5 exercises:
 1. As written, getint treats a + or - not followed by a digit as a valid representation of zero. Fix it to push such a character back on the input. [possible solution](chapter5/exercise5-1.c)
 1. Write getfloat , the floating-point analog of getint . What type does getfloat return as its function value? [possible solution](chapter5/exercise5-2.c)
