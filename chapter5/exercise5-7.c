@@ -4,15 +4,15 @@
 #define MAXLINES 5000	// max number of lines
 char *lineptr[MAXLINES];		// pointer to text lines
 
-int readlines(char *lineptr[], int maxlines);
+int readlines(char *lineptr[], char *mem, int maxlines);
 void writelines(char *lineptr[], int nlines);
 
 void qsort(char *lineptr[], int left, int right);
 
 int main(){
 	int nlines;			// number of lines read
-
-	if((nlines = readlines(lineptr,MAXLINES)) >= 0){
+	char memory[MAXLINES];
+	if((nlines = readlines(lineptr,memory,MAXLINES)) >= 0){
 		qsort(lineptr, 0, nlines-1);
 		printf("--------------------\n");
 		writelines(lineptr, nlines);
@@ -28,18 +28,20 @@ int ggetline(char *, int);
 char *alloc(int);
 
 
-int readlines(char *lineptr[], int maxlines){
+int readlines(char *lineptr[], char *mem, int maxlines){
 	int len, nlines;
 	char *p, line[MAXLEN];
-
+	char *memEnd = mem + MAXLINES;
+	p = mem;
 	nlines = 0;
 	while((len = ggetline(line, MAXLEN)) > 0)
-		if(nlines >= maxlines || (p = alloc(len)) == NULL)
+		if(nlines >= maxlines || (p + len) > memEnd )
 			return -1;
 		else {
 			line[len-1] = '\0';	// replace new line with endline
 			strcpy(p, line);
 			lineptr[nlines++] = p;
+			p += len;
 		}
 	return nlines;
 }
