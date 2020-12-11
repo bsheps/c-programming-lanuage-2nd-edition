@@ -1,22 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>	// for atof()
+#include <string.h>
+#include <ctype.h>
 
 #define MAXOP	100 // max size of operand or operator
 #define NUMBER	'0'
 
+int getch(void);
+void ungetch(int);
 int getop(char []);
 void push(double);
 double pop(void);
 void showInternals(int);
 
 //reverse polish calculator
-int main(){
-	int type;
+int main(int argc, char *argv[]){
+	int type, len;
 	double op2;
-	char s[MAXOP];
+	char s[MAXOP], *str;
 
-	while((type = getop(s)) != EOF) {
+	while(--argc > 0) {
 		showInternals(type);
+		ungetch(' ');
+		str = *++argv;
+		len = strlen(str);
+		while(--len >= 0)
+			ungetch(*(str+len));
+		type = getop(s);
 		switch(type){
 		case NUMBER:
 			push(atof(s));
@@ -46,6 +56,7 @@ int main(){
 			break;
 		}
 	}
+	printf("\tResult: %.8g\n", pop());
 	return 0;
 }
 
@@ -72,10 +83,6 @@ double pop(void){
 	}
 }
 
-#include <ctype.h>
-
-int getch(void);
-void ungetch(int);
 
 // getop: get next operator or numeric operand
 // separate inputs with either space or tab
