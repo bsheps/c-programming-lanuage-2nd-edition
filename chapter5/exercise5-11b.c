@@ -13,14 +13,29 @@ int main(int argc, char *argv[]){
 	char line[MAXLINE];
 	char out[MAXLINE];
 	int c;
-	setTabs(argc, argv);
-	while(--argc >= 0)
-		printf("%d ", *tabs++);
+	int cols;
+	if(argc == 1)
+		cols = (MAXLINE / 8) + 1;
+	else
+		cols = argc;
+	int t[cols];
+	tabs = t;
+	if(argc == 1)
+		for(argc = 8; argc < MAXLINE; argc +=8)
+			*tabs++ = argc;
+	else
+		while(--argc >= 1)
+			*tabs++ = atoi(*++argv);
+	*tabs = 0;
+	tabs = t;
+	/* // for debugging
+	while(*tabs ){
+		printf("%d ", *tabs);
+		tabs++;
+	}*/
 	printf("setTab complete\n");
 	while((c=getLine(line, MAXLINE)) != EOF){
-		printf("getline complete: %d\n",c);
 		c = detab(line, out, c);
-		printf("detab complete\n");
 		printf("%s", out);
 		for(;c>=0;--c){
 			out[c]='\0';
@@ -29,36 +44,23 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-void setTabs(int argc, char *argv[]){
-	int t[argc], i = 0;
-	if(argc == 1)
-		for(argc = 8; argc < MAXLINE; argc +=8)
-			t[i++] = argc;
-	else{
-		while(--argc >= 1)
-			t[i++] = atoi(*++argv);
-		t[i] = MAXLINE; // cannot exceed MAXLINE
-	}
-	tabs = t;
-}
-
 int detab(char in[], char out[], int len){
-	int i;
+	int i, *tab;
+	tab = tabs;
 	int index = 0; // index is for out array
 	for(i=0; i < len; ++i){
 		if(in[i] == '\t'){
 			out[index]= ' ';
-			while(index > *tabs)
-				++tabs;
+			while(index > *tab)
+				++tab;
 			++index;
-			printf("tab: %d\n", *tabs);	
-			while(index < *tabs)  // fill in rest of column
+			printf("tab: %d\n", *tab);	
+			while(index < *tab)  // fill in rest of column
 				out[index++] = ' ';
 		}else{
 			out[index] = in[i];
 			++index;
 		}
-		printf("%d,%d\n", i, index);
 	}
 	return index;
 }
