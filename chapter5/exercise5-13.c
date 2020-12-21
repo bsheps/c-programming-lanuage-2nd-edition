@@ -15,20 +15,14 @@ char *alloc(int);
 int main(int argc, char *argv[]){
 	int nlines;
 
-	if(argc > 2){
-		printf("error1: invalid parameters\n tail -[num input lines]\n");
-		return 2;	
-	}else if(argc == 2){
-		char *s = *++argv;
-		if(*s == '-'){
-			s++;
-			tail = atoi(s);
-		}else{
-			printf("error2: invalid parameters\n tail -[num input lines]\n");
-			return 2;
-		}
-	}else
+	if(argc == 1){
 		tail = 10;
+	}else if(argc == 2 && (*++argv)[0] == '-'){
+		tail = atoi(argv[0] + 1);
+	}else{
+		printf("error: invalid parameters\n tail -[num input lines]\n");
+		return 2;	
+	}
 
 	if((nlines = readlines(lineptr, MAXLINES)) >= 0){
 		writelines(lineptr, nlines);
