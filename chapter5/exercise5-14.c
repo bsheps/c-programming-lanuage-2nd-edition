@@ -21,6 +21,7 @@ int main(int argc, char *argv[]){
 	if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
 		qsort2((void **) lineptr, 0, nlines-1,
 			(int (*)(void*,void*))(numeric ? numcmp2 : strcmp));
+		printf("\n\nsort\n");
 		writelines(lineptr, nlines);
 		return 0;
 	}else{
@@ -50,7 +51,7 @@ int numcmp2(char *s1, char *s2){
 		double v1, v2;
 
 		v1 = atof(s1);
-		v1 = atof(s2);
+		v2 = atof(s2);
 		if(v1 < v2)
 				return -1;
 		else if(v1 > v2)
