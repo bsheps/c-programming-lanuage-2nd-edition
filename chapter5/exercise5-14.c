@@ -6,23 +6,37 @@
 char *lineptr[MAXLINES];
 
 int readlines(char *lineptr[], int nlines);
-void writelines(char *lineptr[], int nlines);
+void writelines(char *lineptr[], int nlines, int reverse);
 
 void qsort2(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 
 int numcmp2(char *, char *);
 
 int main(int argc, char *argv[]){
-	int nlines;
-	int numeric = 0;	// 1 if numeric sort
-
-	if(argc > 1 && strcmp(argv[1], "-n") == 0)
-		numeric = 1;
+	int nlines, c;
+	int rev = 0;
+	int (*func)(void *, void *);
+		func = &strcmp;
+	while(--argc > 0 && (*++argv)[0] == '-'){
+		while(c = *++argv[0]){
+				switch(c){
+				case 'n':
+						func = numcmp2;
+						break;
+				case 'r':
+						rev = 1;
+						break;
+				default:
+						printf("Error invalid arg: %c\n", c);
+						return 2;
+				}
+		}
+	}
 	if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
 		qsort2((void **) lineptr, 0, nlines-1,
-			(int (*)(void*,void*))(numeric ? numcmp2 : strcmp));
-		printf("\n\nsort\n");
-		writelines(lineptr, nlines);
+			(int (*)(void*,void*))(func));
+		printf("\n\n### sort ###\n\n");
+		writelines(lineptr, nlines, rev);
 		return 0;
 	}else{
 		printf("input too big to sort\n");
@@ -112,8 +126,12 @@ char *alloc(int n){
 		return 0;
 }
 
-void writelines(char *lineptr[], int nlines){
-	while(nlines-- > 0)
-		printf("%s\n", *lineptr++);
+void writelines(char *lineptr[], int nlines, int reverse){
+	if(reverse)
+			while(--nlines >= 0)
+					printf("%s\n", *(lineptr+nlines));
+	else
+		while(nlines-- > 0)
+				printf("%s\n", *lineptr++);
 }
 
