@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 #define MAXLINES 5000
+#define MAXLEN 1000 // max length for input lines
 char *lineptr[MAXLINES];
 
 int readlines(char *lineptr[], int nlines);
@@ -15,6 +16,8 @@ int basecmp(char *, char *);
 int numcmp2(char *, char *);
 static int dirorder;
 static int fold;
+static int startInd;
+static int endInd;
 
 /*	Modifying the args accepted so they all need to be bunched together
  *	./a.out -nrfd [startIndex] [endIndex]
@@ -26,8 +29,10 @@ int main(int argc, char *argv[]){
 	int rev = 0;
 	dirorder = 0;
 	fold = 0;
+	startInd = 0;
+	endInd = MAXLEN;
 	int (*func)(void *, void *);
-		func = &strcmp;
+	func = basecmp;
 	while(--argc > 0 && (*++argv)[0] == '-'){
 		while((c = *++argv[0])){
 				switch(c){
@@ -51,6 +56,10 @@ int main(int argc, char *argv[]){
 				}
 		}
 	}
+	if(argc-- > 0)
+		startInd = atoi(*argv++);
+	if(argc > 0)
+		endInd = atoi(*argv);
 	if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
 		qsort2((void **) lineptr, 0, nlines-1,
 			(int (*)(void*,void*))(func));
@@ -99,7 +108,16 @@ int basecmp(char *s1, char *s2){
 				;
 		return tolower(*s1) - tolower(*s2);
 		*/
-		int n, m;
+		int n, m, i;
+		int len1 = strlen(s1);
+		int len2 = strlen(s2);
+		i = 0;
+		if(startInd != 0 && len1 > startInd && len2 > startInd){
+				s1 += startInd;
+				s2 += startInd;
+		}else{
+				printf("Error: index out of bounds, Start: %d, End: %d\ns1: %s\ns2: %s\n", startInd, endInd, s1, s2);
+		}
 		do{
 				if(dirorder){ // only evaluate alphnumeric and blanks
 					while(!isalnum(*s1) && *s1 != ' ' && *s1 != '\0')
@@ -110,11 +128,13 @@ int basecmp(char *s1, char *s2){
 				if(fold){
 						n = tolower(*s1++);
 						m = tolower(*s2++);
+						i++;
 				}else{
 						n = *s1++;
 						m = *s2++;
+						i++;
 				}
-		}while(n == m && n != '\0');
+		}while(n == m && n != '\0' && (startInd + i) < endInd);
 		return n - m;
 
 }
@@ -126,7 +146,6 @@ void swap(void *v[], int i, int j){
 		v[j] = temp;
 }
 
-#define MAXLEN 1000 // max length for input lines
 int getline2(char *s, int lim);
 char *alloc(int n);
 
