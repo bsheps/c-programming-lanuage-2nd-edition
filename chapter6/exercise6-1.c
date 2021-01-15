@@ -88,17 +88,43 @@ int getword(char *word, int lim){
 		;
 	if(c != EOF)
 		*w++ = c;
-	if(!isalpha(c)){
+	if(isalpha(c) || c == '_' || c == '#'){ // handle underscores and preprocessor
+	    for ( ; --lim > 0; w++)
+	    	if(!isalnum(*w = getch()) && *w != '_'){
+	    		ungetch(*w);
+	    		break;
+	    	}
 		*w = '\0';
-		return c;
-	}
-	for ( ; --lim > 0; w++)
-		if(!isalnum(*w = getch())){
-			ungetch(*w);
-			break;
-		}
+		return word[0];
+	}else if(c == '\'' || c == '"'){ // ignore strings
+        for( ; --lim > 0; w++){
+            if((*w = getch()) == '\\') // multi-line string
+                *++w = getch();
+            else if(*w == c){ // end of string
+                ++w;
+                break;
+            }else if(*w == EOF){
+                break;
+            } 
+        }
+        *w = '\0';
+        return word[0];
+    }else if(c == '/'){ // ignore commented code
+        int c2 = getch();
+        if(c2 == '/') // ignore rest of line
+            while(c2 != '\n' && c2 != EOF)
+                c2 = getch();
+        else if(c2 == '*'){ // extended comment section
+            while((c2 = getch()) != EOF) // cycle thru until comment closure
+                if(c2 == '*')
+                    if((c2 = getch()) == '/')
+                        break;
+                    else
+                        ungetch(c2);
+        }
+    }
 	*w = '\0';
-	return word[0];
+	return c;
 }
 
 
