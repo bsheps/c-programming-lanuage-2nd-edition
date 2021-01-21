@@ -25,7 +25,7 @@ struct tnode *addTree(struct tnode *p, char *w);
 struct tnode *treeAlloc(void);
 char *strdup2(char *s);
 void buildArr(struct tnode *arr[], struct tnode* root);
-void sortArr(struct tnode *arr, int len);
+void qsortarr(struct tnode *arr[], int left, int right);
 void printarr(struct tnode *p[]);
 
 int distinct;
@@ -40,7 +40,7 @@ int main(){
         root = addTree(root, word);
     struct tnode *arr[distinct];
     buildArr(arr, root);
-    sortArr(arr, 0, distinct-1);
+    qsortarr(arr, 0, distinct-1);
     printarr(arr);
     return 1;
 }
@@ -51,8 +51,27 @@ void printarr(struct tnode *p[]){
     }
 }
 
-void sortArr(struct tnode *arr, int len){
+void qsortarr(struct tnode *arr[], int left, int right){
 // todo, page 110
+    int i, last;
+    void swap(struct tnode *arr[], int i, int j);
+
+    if(left >= right)
+        return;
+    swap(arr, left, (left+right)/2);
+    last = left;
+    for(i = left+1; i <= right; i++)
+        if(arr[i]->count >= arr[left]->count)
+            swap(arr, ++last, i);
+    swap(arr, left, last);
+    qsortarr(arr, left, last -1);
+    qsortarr(arr, last+1, right);
+}
+
+void swap(struct tnode *arr[], int i, int j){
+    struct tnode *temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
 }
 
 void buildArr(struct tnode *arr[], struct tnode* p){
