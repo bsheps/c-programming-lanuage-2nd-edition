@@ -19,16 +19,16 @@ int main(int argc, char *argv[]){
                     number =1;
                     break;
                 default:
-                    printf("find: illegal option %c\n", c);
+                    fprintf(stderr,"find: illegal option %c\n", c);
                     argc =0;
                     found = -1;
                     break;
         }
-    printf("argc: %d\n", argc);
     if(argc < 1)
-        printf("Usage: find -x -n pattern <optional files>\n");
+        fprintf(stderr, "Usage: find -x -n pattern <optional files>\n");
     else{
-        char *pattern = *++argv;
+        char *pattern = *argv;
+        argc--;
 
         if(argc == 1) // read from stdin
             while (ggetline(line, MAXLINE) > 0){
@@ -65,6 +65,7 @@ int main(int argc, char *argv[]){
             }while(--argc > 0);
         }
     }
+    printf("Total matches: %d\n", found);
     return found;
 } 
 
